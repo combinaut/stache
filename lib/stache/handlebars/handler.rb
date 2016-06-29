@@ -58,7 +58,13 @@ module Stache
             end
           end
 
-          template.call(vars).html_safe
+          output = template.call(vars).html_safe
+          
+          # Procs passed to handlebars were retaining references to `handlebars` and `template` causing memory leaks
+          handlebars = nil
+          template = nil
+          
+          output
         RUBY_CODE
       end
 
